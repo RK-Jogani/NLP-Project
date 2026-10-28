@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f1e9">
+  <title>Urdu News Desk — Editorial Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="paper-grain"></div>
+  <main class="shell">
+    <header class="topline"><a class="wordmark" href="/" aria-label="Urdu News Desk home"><span class="mark" lang="ur" dir="rtl">خبر</span><span>THE URDU<br>NEWS DESK</span></a><div class="edition"><span class="live-dot"></span> LANGUAGE INTELLIGENCE <i></i> VOL. 01 / 2025</div><a class="github-link" href="https://huggingface.co/datasets/AhmadMustafa/Urdu-Instruct-News-Category-Classification" target="_blank" rel="noreferrer">DATA SOURCE <span>↗</span></a></header>
+
+    <section class="hero">
+      <div class="hero-copy"><div class="eyebrow"><span>01</span> &nbsp; A NEW KIND OF NEWSROOM TOOL</div><h1>Stories find<br>their <em>section.</em></h1><p>Urdu news, organized in an instant. Our locally trained language model reads a story and finds where it belongs.</p><div class="hero-tags"><span>اردو NLP</span><b>·</b><span>TEXT CLASSIFICATION</span><b>·</b><span>EDITORIAL TOOLKIT</span></div></div>
+      <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><div class="art-center"><span lang="ur" dir="rtl">خبر</span></div><span class="float-label label-a">WORD<br>FEATURES</span><span class="float-label label-b">TF—IDF<br>VECTORS</span><span class="float-label label-c">اردو</span><div class="spark spark-a">✳</div><div class="spark spark-b">✳</div></div>
+      <div class="hero-index">01 <span>—</span> 04<br><small>TOPIC AREAS</small></div>
+    </section>
+
+    <section class="workspace" id="classifier">
+      <div class="section-head"><div><div class="eyebrow"><span>02</span> &nbsp; THE CLASSIFIER</div><h2>Give a story its place.</h2></div><div class="model-status {% if pipeline_ready %}ready{% else %}missing{% endif %}"><span class="status-dot"></span>{% if pipeline_ready %}MODEL ONLINE{% else %}MODEL NOT FOUND{% endif %}</div></div>
+      <div class="work-grid">
+        <div class="input-panel"><div class="panel-top"><div><span class="step-number">A</span><span class="panel-title">ARTICLE TEXT</span></div><span class="panel-hint">URDU LANGUAGE</span></div><textarea id="article" maxlength="12000" placeholder="یہاں اردو خبر کا متن درج کریں…" dir="auto" aria-label="Urdu news article text"></textarea><div class="input-meta"><span id="word-count">0 WORDS</span><span id="char-count">0 / 12,000</span></div><div class="input-actions"><button id="sample-btn" class="sample-btn" type="button"><span>↳</span> TRY A SAMPLE</button><button id="classify-btn" class="classify-btn" type="button" {% if not pipeline_ready %}disabled{% endif %}><span>CLASSIFY STORY</span><span class="button-arrow">↗</span></button></div><p class="error-message" id="error-message" role="alert"></p><p class="model-missing-note" {% if pipeline_ready %}hidden{% endif %}>Run <code>python train.py</code> to create the saved classifier.</p></div>
+        <aside class="sections-panel"><div class="panel-top"><div><span class="step-number">B</span><span class="panel-title">EDITORIAL SECTIONS</span></div><span class="panel-hint">4 CATEGORIES</span></div><div class="section-list">{% for ur, info in labels.items() %}<div class="section-row"><span class="category-icon" style="--category:{{ info.color }}">{{ info.icon }}</span><div class="category-names"><span class="category-en">{{ info.en }}</span><span class="category-ur" lang="ur" dir="rtl">{{ ur }}</span></div><span class="row-arrow">↗</span></div>{% endfor %}</div><div class="section-foot"><span class="foot-star">✳</span><span>One model. Four newsroom desks.<br>Built for the Urdu language.</span></div></aside>
+      </div>
+    </section>
+
+    <section class="result-section" id="result-section" hidden><div class="eyebrow"><span>03</span> &nbsp; CLASSIFICATION RESULT <span class="result-time" id="result-time"></span></div><div class="result-grid"><div class="result-primary" id="result-primary"><div class="result-caption">THIS STORY BELONGS IN</div><div class="result-urdu" id="result-urdu" lang="ur" dir="rtl"></div><h3 id="result-en"></h3><p>Suggested by the locally trained Urdu news classifier.</p></div><div class="scores-panel"><div class="score-heading">MODEL SCORES <span>ESTIMATES</span></div><div id="scores"></div><div class="score-note">Scores show the model’s relative confidence and may not be calibrated probabilities.</div></div></div><div class="stats-strip" id="stats-strip"></div></section>
+
+    <section class="method-band"><div class="method-title"><div class="eyebrow"><span>04</span> &nbsp; UNDER THE HOOD</div><h2>Editorial instinct,<br><em>machine learned.</em></h2></div><div class="method-copy"><p>Urdu word and character patterns meet a Logistic Regression classifier. Trained on real news examples, evaluated against a held-out test split.</p><div class="method-stats"><div><strong>{% if accuracy is not none %}{{ '%.1f'|format(accuracy * 100) }}%{% else %}—{% endif %}</strong><span>TEST ACCURACY</span></div><div><strong>{% if train_rows %}{{ '{:,}'.format(train_rows) }}{% else %}—{% endif %}</strong><span>TRAINING STORIES</span></div><div><strong>4</strong><span>EDITORIAL SECTIONS</span></div></div></div></section>
+
+    <footer><a class="footer-brand" href="/">THE URDU NEWS DESK</a><span>Built for the love of language &amp; good journalism.</span><span>TF—IDF + LOGISTIC REGRESSION</span></footer>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
