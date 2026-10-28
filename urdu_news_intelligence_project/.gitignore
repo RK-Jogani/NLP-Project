@@ -1,7 +1,11 @@
 __pycache__/
+*.py[cod]
 .venv/
 venv/
-models/*.joblib
-outputs/*
-!.gitkeep
-.streamlit/secrets.toml
+.pytest_cache/
+artifacts/models/*.joblib
+artifacts/reports/*.json
+artifacts/reports/*.png
+artifacts/reports/*.csv
+!artifacts/models/.gitkeep
+!artifacts/reports/.gitkeep
